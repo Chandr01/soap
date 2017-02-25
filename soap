@@ -1,0 +1,21 @@
+import suds
+import osa
+
+# https://fx.currencysystem.com/webservices/CurrencyServer4.asmx?WSDL
+url = 'https://fx.currencysystem.com/webservices/CurrencyServer4.asmx?WSDL'
+client = suds.Client(url)
+response = client.service.Currencies()
+print(response.split(';'))
+
+response2 = client.service.ConvertToNum(fromCurrency='EUR', toCurrency='RUB', amount=126.50, rounding=True)
+print(response2)
+
+test = [('USD', 126), ('EUR', 150)]
+def count_exp(sums):
+    url1 = 'https://fx.currencysystem.com/webservices/CurrencyServer4.asmx?WSDL'
+    client1 = suds.Client(url1)
+    total = 0
+    for curr, value in sums:
+        total += client1.service.ConvertToNum(fromCurrency=curr, toCurrency='RUB', amount=value, rounding=True)
+    return total
+print(count_exp(test))
